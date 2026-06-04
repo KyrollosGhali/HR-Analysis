@@ -52,6 +52,26 @@ remote_filter = st.sidebar.multiselect(
     default=df["Remote Work"].unique()
 )
 
+# Range sliders for Age and Monthly Income
+age_min_default = int(df["Age"].min()) if not pd.isna(df["Age"].min()) else 18
+age_max_default = int(df["Age"].max()) if not pd.isna(df["Age"].max()) else 65
+age_slider = st.sidebar.slider(
+    "Age Range",
+    min_value=age_min_default,
+    max_value=age_max_default,
+    value=(age_min_default, age_max_default),
+)
+
+income_min_default = int(df["Monthly Income"].min()) if not pd.isna(df["Monthly Income"].min()) else 0
+income_max_default = int(df["Monthly Income"].max()) if not pd.isna(df["Monthly Income"].max()) else 100000
+income_slider = st.sidebar.slider(
+    "Monthly Income Range",
+    min_value=income_min_default,
+    max_value=income_max_default,
+    value=(income_min_default, income_max_default),
+    step=100,
+)
+
 # attrition_filter = st.sidebar.multiselect(
 #     "Attrition",
 #     options=df["Attrition"].unique(),
@@ -63,6 +83,8 @@ filtered_df = df[
     (df["Gender"].isin(gender_filter))
     & (df["Job Role"].isin(job_filter))
     & (df["Job Level"].isin(job_level_filter))
+    & (df["Age"].between(age_slider[0], age_slider[1]))
+    & (df["Monthly Income"].between(income_slider[0], income_slider[1]))
     & (df["Marital Status"].isin(marital_filter))
     & (df["Remote Work"].isin(remote_filter))
 ]
