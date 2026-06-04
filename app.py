@@ -191,10 +191,12 @@ with col2:
         attr_gender,
         x="Gender",
         y="AttritionNumeric",
+        color="Gender",
+        color_discrete_sequence=px.colors.qualitative.Plotly,
         title="Attrition Rate by Gender"
     )
     fig.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
-    fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide')
+    fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide', showlegend=False)
 
     st.plotly_chart(
         fig,
@@ -276,10 +278,12 @@ fig = px.bar(
     role_attr,
     x="Job Role",
     y="AttritionNumeric",
+    color="Job Role",
+    color_discrete_sequence=px.colors.qualitative.Plotly,
     title="Attrition Rate by Job Role"
 )
 fig.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
-fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide')
+fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide', showlegend=False)
 
 st.plotly_chart(
     fig,
@@ -304,10 +308,12 @@ fig = px.bar(
     wlb,
     x="Work-Life Balance",
     y="AttritionNumeric",
+    color="Work-Life Balance",
+    color_discrete_sequence=px.colors.qualitative.Plotly,
     title="Work-Life Balance Impact"
 )
 fig.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
-fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide')
+fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide', showlegend=False)
 
 st.plotly_chart(
     fig,
@@ -329,10 +335,12 @@ fig = px.bar(
     satisfaction,
     x="Job Satisfaction",
     y="AttritionNumeric",
+    color="Job Satisfaction",
+    color_discrete_sequence=px.colors.qualitative.Plotly,
     title="Job Satisfaction Impact"
 )
 fig.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
-fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide')
+fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide', showlegend=False)
 
 st.plotly_chart(
     fig,
@@ -354,10 +362,12 @@ fig = px.bar(
     remote,
     x="Remote Work",
     y="AttritionNumeric",
+    color="Remote Work",
+    color_discrete_sequence=px.colors.qualitative.Plotly,
     title="Remote Work Impact"
 )
 fig.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
-fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide')
+fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide', showlegend=False)
 
 st.plotly_chart(
     fig,
@@ -382,33 +392,26 @@ st.plotly_chart(
 )
 
 
-st.subheader("Correlation Heatmap")
+st.subheader("Job Level Impact")
 
-corr_df = filtered_df.copy()
-
-binary_cols = [
-    "Remote Work",
-    "Leadership Opportunities",
-    "Innovation Opportunities"
-]
-
-for col in binary_cols:
-    corr_df[col] = corr_df[col].map(
-        {"Yes": 1, "No": 0}
-    )
-
-corr_df = pd.get_dummies(
-    corr_df,
-    drop_first=True
+job_level = (
+    filtered_df.groupby("Job Level")["AttritionNumeric"]
+    .mean()
+    .reset_index()
 )
 
-corr = corr_df.corr(numeric_only=True)
+job_level["AttritionNumeric"] *= 100
 
-fig = px.imshow(
-    corr,
-    aspect="auto",
-    title="Correlation Matrix"
+fig = px.bar(
+    job_level,
+    x="Job Level",
+    y="AttritionNumeric",
+    color="Job Level",
+    color_discrete_sequence=px.colors.qualitative.Plotly,
+    title="Attrition Rate by Job Level"
 )
+fig.update_traces(texttemplate='%{y:.2f}%', textposition='outside')
+fig.update_layout(yaxis_title='Attrition Rate (%)', uniformtext_minsize=8, uniformtext_mode='hide', showlegend=False)
 
 st.plotly_chart(
     fig,
@@ -416,13 +419,27 @@ st.plotly_chart(
 )
 
 
+# Business Recommendations
+st.subheader("Business Recommendations")
+st.markdown(
+    """
+Based on the findings, the organization should:
+
+1. Expand remote and hybrid work options.
+2. Improve work-life balance programs and policies.
+3. Establish clearer promotion and career development pathways.
+4. Support employees with long commutes through flexible work arrangements.
+5. Strengthen employer branding and company reputation.
+6. Focus retention strategies on entry-level employees and single employees, who represent the highest-risk groups.
+"""
+)
+
 st.subheader("Employee Explorer")
 
 st.dataframe(
     filtered_df,
     use_container_width=True
 )
-
 
 csv = filtered_df.to_csv(index=False)
 
@@ -432,3 +449,4 @@ st.download_button(
     "filtered_hr_data.csv",
     "text/csv"
 )
+
