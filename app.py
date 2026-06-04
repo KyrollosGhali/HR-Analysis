@@ -7,7 +7,7 @@ from pathlib import Path
 import base64
 
 st.set_page_config(
-    page_title="HR Attrition Dashboard",
+    page_title="Employee Attrition Dashboard",
     page_icon="📊",
     layout="wide"
 )
