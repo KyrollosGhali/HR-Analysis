@@ -127,7 +127,7 @@ if logo_path.exists():
         unsafe_allow_html=True,
     )
 
-st.title("HR Attrition Dashboard")
+st.title("Employee Attrition Dashboard")
 
 total_employees = len(filtered_df)
 
