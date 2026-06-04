@@ -432,6 +432,7 @@ fig = px.line(
     color="Attrition",
     markers=True,
     title="Employees Stayed vs Left by Number of Promotions",
+    color_discrete_sequence=px.colors.qualitative.Plotly
 )
 fig.update_layout(xaxis=dict(dtick=1), yaxis_title="Count", legend_title="Attrition")
 
