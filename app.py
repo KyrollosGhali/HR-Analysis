@@ -398,17 +398,42 @@ st.plotly_chart(
     use_container_width=True
 )
 
-# ==========================
-# SCATTER PLOT
-# ==========================
+# # ==========================
+# # SCATTER PLOT
+# # ==========================
 
-fig = px.scatter(
-    filtered_df,
-    x="Monthly Income",
-    y="Number of Promotions",
-    color="Attrition",
-    title="Income vs Promotions"
+# fig = px.scatter(
+#     filtered_df,
+#     x="Monthly Income",
+#     y="Number of Promotions",
+#     color="Attrition",
+#     title="Income vs Promotions"
+# )
+
+# st.plotly_chart(
+#     fig,
+#     use_container_width=True
+# )
+
+
+st.subheader("Promotions: Stayed vs Left")
+
+prom_pivot = (
+    filtered_df.groupby(["Number of Promotions", "Attrition"]).size().reset_index(name="Count")
 )
+
+prom_pivot["Number of Promotions"] = pd.to_numeric(prom_pivot["Number of Promotions"], errors="coerce").fillna(0).astype(int)
+prom_pivot = prom_pivot.sort_values("Number of Promotions")
+
+fig = px.line(
+    prom_pivot,
+    x="Number of Promotions",
+    y="Count",
+    color="Attrition",
+    markers=True,
+    title="Employees Stayed vs Left by Number of Promotions",
+)
+fig.update_layout(xaxis=dict(dtick=1), yaxis_title="Count", legend_title="Attrition")
 
 st.plotly_chart(
     fig,
@@ -458,12 +483,12 @@ Based on the findings, the organization should:
 """
 )
 
-st.subheader("Employee Explorer")
+# st.subheader("Employee Explorer")
 
-st.dataframe(
-    filtered_df,
-    use_container_width=True
-)
+# st.dataframe(
+#     filtered_df,
+#     use_container_width=True
+# )
 
 csv = filtered_df.to_csv(index=False)
 
