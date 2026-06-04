@@ -20,7 +20,7 @@ def load_data():
 df = load_data()
 
 
-st.sidebar.title("Filters")
+st.sidebar.title("Attributes Filter")
 
 gender_filter = st.sidebar.multiselect(
     "Gender",
@@ -32,6 +32,12 @@ job_filter = st.sidebar.multiselect(
     "Job Role",
     options=df["Job Role"].unique(),
     default=df["Job Role"].unique()
+)
+
+job_level_filter = st.sidebar.multiselect(
+    "Job Level",
+    options=df["Job Level"].unique(),
+    default=df["Job Level"].unique()
 )
 
 marital_filter = st.sidebar.multiselect(
@@ -46,19 +52,19 @@ remote_filter = st.sidebar.multiselect(
     default=df["Remote Work"].unique()
 )
 
-attrition_filter = st.sidebar.multiselect(
-    "Attrition",
-    options=df["Attrition"].unique(),
-    default=df["Attrition"].unique()
-)
+# attrition_filter = st.sidebar.multiselect(
+#     "Attrition",
+#     options=df["Attrition"].unique(),
+#     default=df["Attrition"].unique()
+# )
 
 
 filtered_df = df[
     (df["Gender"].isin(gender_filter))
     & (df["Job Role"].isin(job_filter))
+    & (df["Job Level"].isin(job_level_filter))
     & (df["Marital Status"].isin(marital_filter))
     & (df["Remote Work"].isin(remote_filter))
-    & (df["Attrition"].isin(attrition_filter))
 ]
 filtered_df = filtered_df.copy()
 filtered_df["AttritionNumeric"] = (
@@ -289,10 +295,6 @@ st.plotly_chart(
     fig,
     use_container_width=True
 )
-
-# ==========================
-# WORK-LIFE BALANCE
-# ==========================
 
 wlb = (
     filtered_df.groupby(
