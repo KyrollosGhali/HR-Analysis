@@ -308,7 +308,7 @@ if logo_path.exists():
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
         }}
         .fixed-logo img {{
-            width: 150px;
+            width: 300px;
             height: auto;
             display: block;
         }}
@@ -332,7 +332,7 @@ if logo_path.exists():
 
 st.title("Employee Attrition Dashboard")
 st.caption(
-    f"Combined analysis of train.csv and test.csv: {len(data):,} employees, {total_leavers:,} leavers, {pct(baseline_rate)} attrition overall."
+    f"Week 1 - Kyfa Internship"
 )
 
 # st.sidebar.title("Analysis Scope")
@@ -726,14 +726,14 @@ with tabs[8]:
             That group has {pct(profile_rate)} attrition, which is {fmt_points(profile_lift)} above the company average, and it includes {profile_count:,} employees. That is large enough to matter operationally, not just statistically.
             """
         )
-        st.dataframe(
-            profile_table.assign(
-                AttritionRate=profile_table["AttritionRate"].map(pct),
-                Lift=profile_table["Lift"].map(fmt_points),
-            ),
-            use_container_width=True,
-            hide_index=True,
-        )
+        # st.dataframe(
+        #     profile_table.assign(
+        #         AttritionRate=profile_table["AttritionRate"].map(pct),
+        #         Lift=profile_table["Lift"].map(fmt_points),
+        #     ),
+        #     use_container_width=True,
+        #     hide_index=True,
+        # )
         st.info("Recommendation: if leadership wants a single targetable segment, start with entry-level single employees reporting poor work-life balance, then add overtime and remote-access fixes.")
 
 with tabs[9]:
@@ -762,15 +762,15 @@ with tabs[9]:
         fig.update_traces(texttemplate="%{y:.1f} pts", textposition="outside")
         fig.update_layout(yaxis_title="Lift above company average (pts)", xaxis_title="", showlegend=False)
         st.plotly_chart(fig, use_container_width=True)
-    with q10_col2:
-        st.dataframe(
-            top_three.assign(
-                rate=top_three["rate"].map(pct),
-                lift=top_three["lift"].map(fmt_points),
-            )[["driver", "value", "rate", "lift", "employees"]],
-            use_container_width=True,
-            hide_index=True,
-        )
+    # with q10_col2:
+    #     st.dataframe(
+    #         top_three.assign(
+    #             rate=top_three["rate"].map(pct),
+    #             lift=top_three["lift"].map(fmt_points),
+    #         )[["driver", "value", "rate", "lift", "employees"]],
+    #         use_container_width=True,
+    #         hide_index=True,
+    #     )
 
     if not top_three.empty:
         top_driver = top_three.iloc[0]
