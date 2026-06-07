@@ -335,10 +335,10 @@ st.caption(
     f"Combined analysis of train.csv and test.csv: {len(data):,} employees, {total_leavers:,} leavers, {pct(baseline_rate)} attrition overall."
 )
 
-st.sidebar.title("Analysis Scope")
-st.sidebar.info(
-    "This dashboard uses the combined train + test dataset for the headline questions so the numbers stay aligned with the brief."
-)
+# st.sidebar.title("Analysis Scope")
+# st.sidebar.info(
+#     "This dashboard uses the combined train + test dataset for the headline questions so the numbers stay aligned with the brief."
+# )
 
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Employees", f"{len(data):,}")
