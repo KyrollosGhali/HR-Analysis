@@ -499,18 +499,18 @@ with tabs[3]:
                     "Gap": float(low_band["AttritionFlag"] - high_band["AttritionFlag"]),
                 }
             )
-        level_table = pd.DataFrame(level_summary).sort_values("Gap", ascending=False)
-        st.dataframe(
-            level_table.assign(
-                **{
-                    "Low band": level_table["Low band"].map(pct),
-                    "High band": level_table["High band"].map(pct),
-                    "Gap": level_table["Gap"].map(fmt_points),
-                }
-            ),
-            use_container_width=True,
-            hide_index=True,
-        )
+        # level_table = pd.DataFrame(level_summary).sort_values("Gap", ascending=False)
+        # st.dataframe(
+        #     level_table.assign(
+        #         **{
+        #             "Low band": level_table["Low band"].map(pct),
+        #             "High band": level_table["High band"].map(pct),
+        #             "Gap": level_table["Gap"].map(fmt_points),
+        #         }
+        #     ),
+        #     use_container_width=True,
+        #     hide_index=True,
+        # )
 
     st.markdown(
         """
